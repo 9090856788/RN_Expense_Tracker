@@ -1,19 +1,27 @@
-import { Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { FC, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { loginStyle } from '../styles/loginStyle';
 import { Translation } from '../constant/constant';
-import { navigate } from '../utils/NavigationUtil';
+import { replace } from '../utils/NavigationUtil';
+import { storage } from '../utils/storage';
 
 const LoginScreen: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Handle login logic here
-    navigate('Dashboard');
-    console.log('Email:', email);
-    console.log('Password:', password);
+    if (!email || !password) {
+      Alert.alert('Please fill all the input field details');
+      return;
+    }
+    try {
+      await storage.setItem('@username', email);
+      replace('Dashboard');
+    } catch (error) {
+      console.error('Unable to store the information', error);
+    }
   };
 
   return (
@@ -22,7 +30,7 @@ const LoginScreen: FC = () => {
         <Text style={loginStyle.title}>{Translation.TITLE}</Text>
         <TextInput
           style={loginStyle.input}
-          placeholder={Translation.EMAIL}
+          placeholder={Translation.USERNAME}
           placeholderTextColor="black"
           value={email}
           onChangeText={text => setEmail(text)}

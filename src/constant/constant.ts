@@ -1,9 +1,9 @@
 export const Translation = {
   LOGIN: 'Login',
-  EMAIL: 'Email',
+  USERNAME: 'username',
   PASSWORD: 'Password',
   TITLE: 'Expense Tracker',
-  GREETING_TO_USER: 'Hello, User! ...',
+  GREETING_TO_USER: 'Hello,',
   RECENT_EXPENSES: 'Recent Expenses',
   SAVE: 'Save',
   ADD_EXPENSE: 'Add Your Expense',
