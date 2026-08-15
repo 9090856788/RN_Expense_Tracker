@@ -28,10 +28,21 @@ const AddExpenseScreen = () => {
       };
       list.push(newExpense);
       await storage.setItem('@expense', JSON.stringify(list));
-      Alert.alert('Expense added successfully');
-      setAmount('');
-      setDescription('');
-      navigate('Home');
+      Alert.alert(
+        'Success',
+        'Expense added successfully',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              setAmount('');
+              setDescription('');
+              navigate('Home');
+            },
+          },
+        ],
+        { cancelable: false },
+      );
     } catch (error) {
       console.error('There is some error occur', error);
     }

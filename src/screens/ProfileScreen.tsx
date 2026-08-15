@@ -1,9 +1,11 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { profileStyle } from '../styles/profileStyle';
 import { Avatar } from '@kolking/react-native-avatar';
 import { Translation } from '../constant/constant';
+import { storage } from '../utils/storage';
+import { navigate, resetAndNavigate } from '../utils/NavigationUtil';
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState({
@@ -12,9 +14,44 @@ const ProfileScreen = () => {
     email: '',
   });
 
-  const handleUpdateProfile = () => {
+  useEffect(() => {
+    const getUserProfileDetails = async () => {
+      const userProfileData = await storage.getItem('@userProfile');
+      if (userProfileData) {
+        setUserData(JSON.parse(userProfileData));
+      }
+    };
+    getUserProfileDetails();
+  }, []);
+
+  const handleUpdateProfile = async () => {
     // Handle profile update logic here
+    if (
+      userData.firstName === '' ||
+      userData.lastName === '' ||
+      userData.email === ''
+    ) {
+      Alert.alert('Please fill the details to update');
+      return;
+    } else {
+      await storage.setItem('@userProfile', JSON.stringify(userData));
+      navigate('Home');
+    }
   };
+
+  const handleLogout = async () => {
+    try {
+      await storage.removeItem('@username');
+      await storage.removeItem('@userProfile');
+      await storage.removeItem('@expense');
+
+      resetAndNavigate('Login');
+    } catch (error) {
+      console.error(error);
+      Alert.alert('There is some error occur');
+    }
+  };
+
   return (
     <SafeAreaView style={profileStyle.baseContainer}>
       <View style={profileStyle.container}>
@@ -80,7 +117,7 @@ const ProfileScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={handleUpdateProfile}
+          onPress={handleLogout}
           style={profileStyle.profileUpdateButton}
         >
           <Text style={profileStyle.profileUpdateButtonText}>

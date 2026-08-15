@@ -30,7 +30,7 @@ const LoginScreen: FC = () => {
         <Text style={loginStyle.title}>{Translation.TITLE}</Text>
         <TextInput
           style={loginStyle.input}
-          placeholder={Translation.USERNAME}
+          placeholder={Translation.EMAIL}
           placeholderTextColor="black"
           value={email}
           onChangeText={text => setEmail(text)}

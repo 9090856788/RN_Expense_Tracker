@@ -1,6 +1,6 @@
 export const Translation = {
   LOGIN: 'Login',
-  USERNAME: 'username',
+  EMAIL: 'Email',
   PASSWORD: 'Password',
   TITLE: 'Expense Tracker',
   GREETING_TO_USER: 'Hello,',
